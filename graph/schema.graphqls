@@ -1,0 +1,66 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type StrengthTrainingExerciseDetails {
+  weight: Float
+  reps: Int
+  sets: Int
+}
+
+type RunningExerciseDetails {
+  distanceKm: Float
+  time: Float
+}
+
+union ExerciseDetails = StrengthTrainingExerciseDetails | RunningExerciseDetails
+
+type Exercise {
+  id: ID!
+  description: String!
+  details: ExerciseDetails
+}
+
+enum Rating {
+  TERRIBLE
+  BAD
+  OKAY
+  GOOD
+  GREAT
+}
+
+type Session {
+  id: ID!
+  title: String!
+  date: String!
+  rating: Rating!
+  exercises: [Exercise]
+}
+
+type Viewer {
+  sessions: [Session]
+}
+
+type Query {
+  viewer: Viewer
+}
+
+input NewExercise {
+  description: String!
+  type: String!
+  weight: Float
+  reps: Int
+  sets: Int
+  distanceKm: Float
+  time: Float
+}
+
+input NewSession {
+  title: String!
+  rating: Rating!
+  exercises: [NewExercise]
+}
+
+type Mutation {
+  logSession(input: NewSession!): Session!
+}
